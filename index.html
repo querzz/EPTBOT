@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Echo Pulse</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background: #1a1a2e; color: #fff; }
+        button { padding: 10px 20px; margin: 5px; background: #0f3460; color: white; border: none; cursor: pointer; }
+        button:hover { background: #16213e; }
+        #stats, #nft { font-size: 18px; margin: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Echo Pulse</h1>
+    <div id="stats">EPT: 0 | NFT: 0</div>
+    <button onclick="forgeNFT()">Сплавить NFT (20 EPT)</button>
+    <button onclick="buyBooster()">Купить бустер (50 EPT)</button>
+    <button onclick="joinWave()">Присоединиться к волне</button>
+    <div id="nft">Твои NFT: <span id="nft-list"></span></div>
+    <button onclick="Telegram.WebApp.close()">Закрыть</button>
+
+    <script>
+        let ept = 0;
+        let nft = [];
+        let booster = 1;
+
+        function updateStats() {
+            document.getElementById("stats").innerText = `EPT: ${ept} | NFT: ${nft.length}`;
+            document.getElementById("nft-list").innerText = nft.join(", ");
+        }
+
+        function forgeNFT() {
+            if (ept >= 20) {
+                ept -= 20;
+                const nftTypes = ["Эхо Тишины", "Импульс Гениальности", "Эхо Крика"];
+                const newNFT = nftTypes[Math.floor(Math.random() * nftTypes.length)];
+                nft.push(newNFT);
+                updateStats();
+                alert(`Ты сплавил ${newNFT}!`);
+            } else {
+                alert("Недостаточно EPT!");
+            }
+        }
+
+        function buyBooster() {
+            if (ept >= 50) {
+                ept -= 50;
+                booster *= 2;
+                updateStats();
+                alert("Бустер куплен! Добыча удвоена.");
+            } else {
+                alert("Недостаточно EPT!");
+            }
+        }
+
+        function joinWave() {
+            alert("Имитация эхо-волны! Запиши голос или позови друзей для бонуса.");
+            ept += 10 * booster; // Бонус за волну
+            updateStats();
+        }
+
+        // Имитация добычи через активность (в продакшне синхронизируйте с ботом)
+        setInterval(() => {
+            ept += 1 * booster; // 1 EPT в минуту с бустером
+            updateStats();
+        }, 60000);
+
+        Telegram.WebApp.ready();
+    </script>
+</body>
+</html>
